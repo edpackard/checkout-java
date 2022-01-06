@@ -5,7 +5,7 @@ In this exercise you will implement the Product Scanner exercise described in th
 
 ### Intellij setup
 
-A skeleton version of the project has been set up on Github at git@github.com:markschnitzius/ProductScannerExercise.git.
+A skeleton version of the project has been set up on Github at `git@github.com:markschnitzius/ProductScannerExercise.git`.
 So you can create the project by selecting "File | New | Project from Version Control":
 
 ![New Project from Version Control](doc/createproj.png)
@@ -80,3 +80,14 @@ Intellij window).  But then you should see a test failure:
 
 This failure occurs because we've only stubbed out the class that's being tested (CheckoutImpl).  Your job is to
 add the 'guts' to that class, so that this test will pass!
+
+### Bonus points
+
+If you've gotten this far, well done!  But if that was a bit too easy, here are a few enhancements you might want
+to consider:
+
+* Checkout is a Java interface, but its implementation is a Java class.  We could also define an interface for the Item class -- this would allow us to define other kinds of items with additional fields.
+* The Checkout class allows you to add item ids to the basket individually, but the original problem definition shows an example where a list of items is accepted.  So add another method that takes a collection of items ids and adds them all to the basket.
+* You could also make the method accept a variable number of arguments -- see [Java varargs](https://www.baeldung.com/java-varargs) for more details.
+* The CheckoutImpl#getTotal method computes the total each time you call it.  Make it save the total to a new field the first time, then just return that field every time it is called afterwards.
+* 
