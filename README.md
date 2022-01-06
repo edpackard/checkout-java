@@ -13,4 +13,14 @@ And paste in the github URL:
 ![Get from Version Control](doc/getfromversioncontrol.png)
 
 You'll need to also give it the directory where you want to save the project locally.
+After clicking Clone, you should be able to view the project structure in the Project
+view pane on the left.  Click around and have a look:
 
+![Project pane](doc/projectview.png)
+
+
+Java
+
+Maven
+
+Source control
