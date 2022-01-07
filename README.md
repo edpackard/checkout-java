@@ -29,7 +29,7 @@ seeing these errors.
 ### Maven
 
 This project uses a build automation tool called Maven that is widely used for project management.
-Using Maven, you can
+(Kin+Carta use it, but sometimes also use an alternative called Gradle.)  Using Maven, you can
 
 * Configure the project Java version, project structure, properties, etc.
 * Define which external libraries are used by the project.
@@ -81,13 +81,37 @@ Intellij window).  But then you should see a test failure:
 This failure occurs because we've only stubbed out the class that's being tested (CheckoutImpl).  Your job is to
 add the 'guts' to that class, so that this test will pass!
 
+### A word about currency values
+
+In this test project we are representing the currency amounts in a Java primitive type, int, representing the
+number of pence.  This is not an uncommon approach, to represent currency amounts as a raw count of the smallest
+unit; however, it is prone to error in situations where percentages or conversions may occur, as there is no way
+to represent a fraction of a pence.
+
+However, using one of Java's floating point types (float, double, or BigDecimal) is also prone to error, and
+you'll often see cases where values that should compute to a whole value like 8 instead compute to 7.9999.
+
+So what's the solution?  In production-ready systems where it is frequently important to maintain a high degree
+of accuracy for our clients, it is recommended that you do not reinvent the wheel -- instead use an existing
+library such as [javax.currency](https://www.baeldung.com/java-money-and-currency) to represent your currency
+amounts.  This library contains battle-tested classes and methods you can use to parse currency amounts,
+round accurately, convert between currencies, etc. with a high degree of confidence.
+
 ### Bonus points
 
 If you've gotten this far, well done!  But if that was a bit too easy, here are a few enhancements you might want
 to consider:
 
-* Checkout is a Java interface, but its implementation is a Java class.  We could also define an interface for the Item class -- this would allow us to define other kinds of items with additional fields.
 * The Checkout class allows you to add item ids to the basket individually, but the original problem definition shows an example where a list of items is accepted.  So add another method that takes a collection of items ids and adds them all to the basket.
 * You could also make the method accept a variable number of arguments -- see [Java varargs](https://www.baeldung.com/java-varargs) for more details.
+* We hardcoded the list of available products in CheckoutImpl.  Make it instead so that these are defined by the code which creates instances of this class -- either pass them in via a constructor, or by additional method calls.
+* Checkout is a Java interface, but its implementation is a Java class.  We could also define an interface for the Item class -- this would allow us to define other kinds of items in the future with additional fields.
 * The CheckoutImpl#getTotal method computes the total each time you call it.  Make it save the total to a new field the first time, then just return that field every time it is called afterwards.
-* 
+* Did you compute the total using a 'for' loop?  An alternative is to do it using a functional programming technique built into modern day Java.  See [Java Streams](https://stackify.com/streams-guide-java-8/) for more information.
+
+## Next steps
+
+You should at this point be able to add the next bit of new functionality to the CheckoutImpl class -- promotions.
+Start by uncommenting the additional test methods, and seeing that they fail because discounts aren't being applied.
+(Incidentally, this method of writing failing tests before proceeding with code is known as [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development).)
+

@@ -1,5 +1,7 @@
 package com.kinandcarta.exercise;
 
+import java.util.List;
+
 /**
  * The default implementation of a {@link Checkout}.  This means that all the methods defined in
  * Checkout MUST be implemented here.  There are skeleton implementations for these methods below.
@@ -21,12 +23,16 @@ public class CheckoutImpl implements Checkout {
 
 
     @Override
-    public void addItem(String itemId) {
+    public void scan(List<String> itemIds) {
 
-        // Verify the item id is one that we know about (i.e. check it against the field that defines item types).
-        // If it's not, throw an exception.
+        // Loop through the list of itemIds.  Then, for each item id:
 
-        // Add the item id to the list of scanned items.  We'll compute the total later when requested.
+        // 1. Verify the item id is one that we know about (i.e. check it against the field that defines item types).
+        // If it's not, throw a new RuntimeException.
+
+        // 2. Add the item id to the list of scanned items.  We'll compute the total later when requested.
+
+
 
         // As the return type of the method is 'void', there's no need to return anything.
     }

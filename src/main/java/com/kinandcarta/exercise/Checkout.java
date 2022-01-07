@@ -1,5 +1,7 @@
 package com.kinandcarta.exercise;
 
+import java.util.List;
+
 /**
  * The interface that defines a Checkout.  This means that all classes which say 'implements Checkout'
  * as part of their definition MUST define these methods.
@@ -9,9 +11,9 @@ public interface Checkout {
     /**
      * Adds the given item to the basket.
      *
-     * @param itemId the item id to add to the basket
+     * @param itemIds the item ids to add to the basket
      */
-    void addItem(String itemId);
+    void scan(List<String> itemIds);
 
     /**
      * Gets the total for the basket.
