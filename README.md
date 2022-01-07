@@ -1,9 +1,14 @@
 ## Product Scanner exercise
 
-In this exercise you will implement the Product Scanner exercise described in the
-"Learning Objectives - Hello Java!" section of the wiki.
+Hopefully you have worked your way through the [Learning Objectives](https://www.notion.so/kinandcarta/2bebd563189f4a5bb7efb1529474a86f?v=d44afb13070f4647984a88b8370689ba)
+resources in Notion.  Towards the end of the 'Hello Java!' there is a coding exercise.
+This project will actually help you implement that exercise, starting pretty much
+from scratch for people who are new to Java or need a refresher.
 
-### Intellij setup
+We will assume here that you have Intellij installed and running on your computer
+(please see the 'Set up your environment!' section in Notion if not).
+
+### Create your Intellij project
 
 A skeleton version of the project has been set up on Github at `git@github.com:markschnitzius/ProductScannerExercise.git`.
 So you can create the project by selecting "File | New | Project from Version Control":
@@ -99,11 +104,9 @@ round accurately, convert between currencies, etc. with a high degree of confide
 
 ### Bonus points
 
-If you've gotten this far, well done!  But if that was a bit too easy, here are a few enhancements you might want
-to consider:
+If you've gotten the test running, well done!  But if that was a bit too easy, here are a few enhancements you
+might want to consider:
 
-* The Checkout class allows you to add item ids to the basket individually, but the original problem definition shows an example where a list of items is accepted.  So add another method that takes a collection of items ids and adds them all to the basket.
-* You could also make the method accept a variable number of arguments -- see [Java varargs](https://www.baeldung.com/java-varargs) for more details.
 * We hardcoded the list of available products in CheckoutImpl.  Make it instead so that these are defined by the code which creates instances of this class -- either pass them in via a constructor, or by additional method calls.
 * Checkout is a Java interface, but its implementation is a Java class.  We could also define an interface for the Item class -- this would allow us to define other kinds of items in the future with additional fields.
 * The CheckoutImpl#getTotal method computes the total each time you call it.  Make it save the total to a new field the first time, then just return that field every time it is called afterwards.
@@ -111,7 +114,12 @@ to consider:
 
 ## Next steps
 
-You should at this point be able to add the next bit of new functionality to the CheckoutImpl class -- promotions.
-Start by uncommenting the additional test methods, and seeing that they fail because discounts aren't being applied.
+You should at this point be able to add the next bit of new functionality to the CheckoutImpl class.  The
+exercise description talks about also applying specific promotions.
+
+Start by uncommenting the additional test methods, and seeing that they fail because promotions aren't being applied.
 (Incidentally, this method of writing failing tests before proceeding with code is known as [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development).)
 
+As there are two kinds of promotion, you'll probably want to define an interface that all promotions must
+implement, and then two classes that implement that interface for the two different promotion types.
+Then you'll need to apply these promotions when you compute the total.
