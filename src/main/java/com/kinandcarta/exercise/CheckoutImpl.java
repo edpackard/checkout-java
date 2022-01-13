@@ -1,54 +1,45 @@
 package com.kinandcarta.exercise;
 
-import java.util.List;
+import com.kinandcarta.domain.ItemImpl;
 
-/**
- * The default implementation of a {@link Checkout}.  This means that all the methods defined in
- * Checkout MUST be implemented here.  There are skeleton implementations for these methods below.
- *
- * (This class could also implement other interfaces as well, but do not confuse this with 'multiple
- * inheritance' that you may know from C++ or other languages; Java only allows single inheritance.)
- */
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
 public class CheckoutImpl implements Checkout {
 
-    // We want to define the kinds of things a user can purchase.  So add a field here that lets us look
-    // up an Item based on the item id (a String).  You'll probably want to use one of the Java collection
-    // classes (https://www.javatpoint.com/collections-in-java) to make a mapping (hint, hint) between
-    // the item id String and an Item instance.  It should have the word 'private' in front of it, as we
-    // don't want this field to be visible from other classes.
+    private HashMap<String, ItemImpl> items;
+    private ArrayList<String> basket;
 
-
-    // Create another field that will hold the scanned item ids (i.e. the basket).  This should be private
-    // as well.
-
+    public CheckoutImpl(){
+       items = new HashMap<String, ItemImpl>();
+       basket = new ArrayList<String>();
+       items.put("0001", new ItemImpl ("Water Bottle", 2495));
+       items.put("0002", new ItemImpl ("Hoodie", 6500));
+       items.put("0003", new ItemImpl ("Sticker Set", 399));
+    }
 
     @Override
     public void scan(List<String> itemIds) {
-
-        // Loop through the list of itemIds.  Then, for each item id:
-
-        // 1. Verify the item id is one that we know about (i.e. check it against the field that defines item types).
-        // If it's not, throw a new RuntimeException.
-
-        // 2. Add the item id to the list of scanned items.  We'll compute the total later when requested.
-
-
-
-        // As the return type of the method is 'void', there's no need to return anything.
+        for (String itemId : itemIds) {
+            if (items.containsKey(itemId)) {
+                basket.add(itemId);
+            } else {
+                throw new RuntimeException("Invalid itemId");
+            }
+        }
     }
 
     @Override
     public int getTotal() {
-
-        // Initially items are just defined as some number of pence, an int.  So our total can be an int as well.
         int total = 0;
-
-        // Loop through the scanned item ids.
-        // For each one, look up its price and add it to the total.
+        for (String itemId : basket) {
+            ItemImpl item = items.get(itemId);
+            total += item.getItemPrice();
+        }
 
         // At a later point we'll want to apply the discounts at this point, but you can skip this for now.
 
-        // Finally, return the total.
         return total;
     }
 }
