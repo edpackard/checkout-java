@@ -1,7 +1,6 @@
 package com.kinandcarta.exercise;
 
-import com.kinandcarta.domain.Item;
-import com.kinandcarta.domain.ItemImpl;
+import com.kinandcarta.domain.*;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -12,21 +11,25 @@ public class CheckoutImpl implements Checkout {
 
     private Map<String, Item> items;
     private List<String> basket;
-    private int tenPercentOfferMinimum;
-    private int discountedWaterBottlePrice;
+    private Promotion discount;
+    private Promotion reduction;
 
     public CheckoutImpl(){
         items = new HashMap<String, Item>();
         basket = new ArrayList<String>();
-        tenPercentOfferMinimum = 7500;
-        discountedWaterBottlePrice = 2299;
         generateItems();
+        generatePromotions();
     }
 
     private void generateItems() {
         items.put("0001", new ItemImpl ("Water Bottle", 2495));
         items.put("0002", new ItemImpl ("Hoodie", 6500));
         items.put("0003", new ItemImpl ("Sticker Set", 399));
+    }
+
+    private void generatePromotions() {
+        discount = new PromotionDiscountBasket(10.00, 7500);
+        reduction = new PromotionMultibuySaving("0001", items.get("0001").getItemPrice(), 2299, 2);
     }
 
     @Override
@@ -47,24 +50,13 @@ public class CheckoutImpl implements Checkout {
                 .map(itemId -> items.get(itemId))
                 .map(item -> item.getItemPrice())
                 .reduce(0, Integer::sum);
-
-        int total = applyDiscount(subtotal);
-
+        int total = applyPromotions(subtotal);
         return total;
     }
 
-    private int applyDiscount(int subtotal) {
-
-        long count = basket.stream()
-                .filter(item -> "0001".equals(item)).count();
-        if (count > 1) {
-            subtotal -= (items.get("0001").getItemPrice() - discountedWaterBottlePrice) * count;
-        }
-
-        if (subtotal > tenPercentOfferMinimum) {
-            subtotal -= Math.round(subtotal / 10.00);
-        }
-
+    private int applyPromotions(int subtotal) {
+        subtotal = reduction.applyPromotion(subtotal, basket);
+        subtotal = discount.applyPromotion(subtotal, basket);
         return subtotal;
     }
 }
