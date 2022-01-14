@@ -12,10 +12,14 @@ public class CheckoutImpl implements Checkout {
 
     private Map<String, Item> items;
     private List<String> basket;
+    private int tenPercentOfferMinimum;
+    private int discountedWaterBottlePrice;
 
     public CheckoutImpl(){
         items = new HashMap<String, Item>();
         basket = new ArrayList<String>();
+        tenPercentOfferMinimum = 7500;
+        discountedWaterBottlePrice = 2299;
         generateItems();
     }
 
@@ -39,13 +43,28 @@ public class CheckoutImpl implements Checkout {
     @Override
     public int getTotal() {
 
-        int total = basket.stream()
+        int subtotal = basket.stream()
                 .map(itemId -> items.get(itemId))
                 .map(item -> item.getItemPrice())
                 .reduce(0, Integer::sum);
 
-        // At a later point we'll want to apply the discounts at this point, but you can skip this for now.
+        int total = applyDiscount(subtotal);
 
         return total;
+    }
+
+    private int applyDiscount(int subtotal) {
+
+        long count = basket.stream()
+                .filter(item -> "0001".equals(item)).count();
+        if (count > 1) {
+            subtotal -= (items.get("0001").getItemPrice() - discountedWaterBottlePrice) * count;
+        }
+
+        if (subtotal > tenPercentOfferMinimum) {
+            subtotal -= Math.round(subtotal / 10.00);
+        }
+
+        return subtotal;
     }
 }
